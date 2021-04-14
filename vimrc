@@ -174,21 +174,13 @@ set showtabline=2  " always show tabline
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 let g:lightline = {
-  \ 'colorscheme': 'solarized',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'tabline': {
-      \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel'
+      \ 'colorscheme': 'solarized',
       \ }
-\ }
+
+let g:lightline.tabline = {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ],
+      \ }
 
 let g:lightline.component_expand = {
       \  'linter_checking': 'lightline#ale#checking',
@@ -196,6 +188,7 @@ let g:lightline.component_expand = {
       \  'linter_warnings': 'lightline#ale#warnings',
       \  'linter_errors': 'lightline#ale#errors',
       \  'linter_ok': 'lightline#ale#ok',
+      \   'buffers': 'lightline#bufferline#buffers',
       \ }
 
 let g:lightline.component_type = {
@@ -204,9 +197,13 @@ let g:lightline.component_type = {
       \     'linter_warnings': 'warning',
       \     'linter_errors': 'error',
       \     'linter_ok': 'right',
+      \     'buffers': 'tabsel',
       \ }
 
-let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]] }
+let g:lightline.active = { 
+     \    'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]],
+     \    'left': [ [ 'mode', 'paste', ], [ 'readonly', 'filename', 'modified', ], ],
+\ }
 
 
 " pangloss/vim-javascript config
@@ -239,7 +236,7 @@ let g:ctrlp_prompt_mappings = {
 
 " vim airline config
 " let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
+" let g:airline_solarized_bg='dark'
 
 " Terraform config
 let g:terraform_fmt_on_save=1
