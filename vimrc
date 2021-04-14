@@ -1,6 +1,9 @@
-set encoding=utf8
+set nocompatible
 
 call plug#begin('~/.vim/plugged')
+Plug 'yegappan/mru'
+Plug 'wfxr/minimap.vim'
+Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 Plug 'leafgarland/typescript-vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
@@ -13,15 +16,16 @@ Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'altercation/vim-colors-solarized'
 Plug 'hashivim/vim-terraform'
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bling/vim-bufferline'
+Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
+Plug 'mengelbrecht/lightline-bufferline'
 call plug#end()
 
 " Shortcut to rapidly toggle `set list`
@@ -92,15 +96,36 @@ endif
 vnoremap > >gv
 vnoremap < <gv
 
-set hidden
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim
 
+set encoding=utf8
 syntax enable
+set spell
+set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
+            " background without writing to disk. When a background buffer becomes current again,
+            " marks and undo-history are remembered
+set showcmd
+set showmode
+set backspace=indent,eol,start
+set history=1000
+set autoread
+set noerrorbells 
+set visualbell
+set title
+set mouse=a 
 set background=dark
 set number
+set cursorline
+set nowrap
+set linebreak
+set scrolloff=3
+set sidescrolloff=5
+set undodir=~/.vim/undodir
 colorscheme solarized
-
+set directory=$HOME/.vim/swp//
+if has('gui_running')
+  set guifont=JetBrains\ Mono
+endif
 " for linux and windows users (using the control key)
 " map <C-S-]> gt
 " map <C-S-[> gT
@@ -115,13 +140,15 @@ colorscheme solarized
 " map <C-9> 9gt
 " map <C-0> :tablast<CR>
 
+" Nerdtree config
 " in NERDTree, to open-silently file in newtab with Enter, instead of default
 " pressing "T" (same for not silently with Tab instead of t) 
 let NERDTreeMapOpenInTab='<TAB>'
 let NERDTreeMapOpenInTabSilent='<ENTER>'
-
 " tab movement
-nnoremap <C-b> :NERDTreeToggle<CR>
+" nnoremap <C-b> :NERDTreeToggle<CR>
+
+
 nnoremap <C-t>     :tabnew<CR>
 " Ctrl + w interfers with window movement
 " nnoremap <C-w>     :tabclose<CR>
@@ -135,6 +162,56 @@ nmap <C-j> ]e
 vmap <C-k> [egv
 vmap <C-j> ]egv
 
+
+" minimap config
+let g:minimap_width = 10
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+
+" lightline config 
+set laststatus=2 
+set showtabline=2  " always show tabline
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+
+let g:lightline = {
+  \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ }
+\ }
+
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'right',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'right',
+      \ }
+
+let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]] }
+
+
+" pangloss/vim-javascript config
+let g:javascript_plugin_jsdoc = 1
+
 " Ale Config
 let g:ale_fixers = {
  \ 'javascript': ['eslint']
@@ -142,23 +219,23 @@ let g:ale_fixers = {
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_lint_on_enter = 0
-highlight ALEErrorSign ctermbg=NONE ctermfg=red
-highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-let g:ale_linters_explicit = 1
-" let g:ale_fix_on_save = 1
-" let g:ale_fix_on_save = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#bufferline#enabled = 1
-let g:ale_completion_enabled = 1
+let g:ale_fix_on_save = 1
+" let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#bufferline#enabled = 1
+" let g:ale_completion_enabled = 1
 
 nnoremap <leader>af :ALEFix<cr>
 "Move between linting errors
 nnoremap ]r :ALENextWrap<CR>
 nnoremap [r :ALEPreviousWrap<CR>
 
-
 " Ctrl+P config
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
+    \ 'AcceptSelection("t")': ['<cr>'],
+    \ }
 
 " vim airline config
 " let g:airline_theme='solarized'
