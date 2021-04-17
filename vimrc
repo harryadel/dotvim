@@ -96,7 +96,17 @@ endif
 vnoremap > >gv
 vnoremap < <gv
 
+" make . to work with visually selected lines
+vnoremap . :normal.<CR>
 
+" Move visual selection
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+set foldenable "Enable folding
+set foldlevelstart=10 "Open most of the folds by default. If set to 0, all folds will be closed.
+set foldnestmax=10 "Folds can be nested. Setting a max value protects you from too many folds.
+set foldmethod=manual "Defines the type of folding.
 
 set encoding=utf8
 syntax enable
@@ -126,19 +136,6 @@ set directory=$HOME/.vim/swp//
 if has('gui_running')
   set guifont=JetBrains\ Mono
 endif
-" for linux and windows users (using the control key)
-" map <C-S-]> gt
-" map <C-S-[> gT
-" map <C-1> 1gt
-" map <C-2> 2gt
-" map <C-3> 3gt
-" map <C-4> 4gt
-" map <C-5> 5gt
-" map <C-6> 6gt
-" map <C-7> 7gt
-" map <C-8> 8gt
-" map <C-9> 9gt
-" map <C-0> :tablast<CR>
 
 " Nerdtree config
 " in NERDTree, to open-silently file in newtab with Enter, instead of default
@@ -148,8 +145,7 @@ let NERDTreeMapOpenInTabSilent='<ENTER>'
 " tab movement
 " nnoremap <C-b> :NERDTreeToggle<CR>
 
-
-nnoremap <C-t>     :tabnew<CR>
+nnoremap <C-t> :tabnew<CR>
 " Ctrl + w interfers with window movement
 " nnoremap <C-w>     :tabclose<CR>
 nnoremap <C-h> :tabprevious<CR>
@@ -161,7 +157,6 @@ nmap <C-j> ]e
 " Bubble multiple lines
 vmap <C-k> [egv
 vmap <C-j> ]egv
-
 
 " minimap config
 let g:minimap_width = 10
