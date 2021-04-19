@@ -103,12 +103,6 @@ vnoremap . :normal.<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-set foldenable "Enable folding
-set foldlevelstart=1 "Open most of the folds by default. If set to 0, all folds will be closed.
-set foldnestmax=10 "Folds can be nested. Setting a max value protects you from too many folds.
-set foldmethod=syntax "Defines the type of folding.
-let javaScript_fold=1 " JavaScript
-
 
 set encoding=utf8
 syntax enable
