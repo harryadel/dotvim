@@ -104,9 +104,11 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 set foldenable "Enable folding
-set foldlevelstart=10 "Open most of the folds by default. If set to 0, all folds will be closed.
+set foldlevelstart=1 "Open most of the folds by default. If set to 0, all folds will be closed.
 set foldnestmax=10 "Folds can be nested. Setting a max value protects you from too many folds.
-set foldmethod=manual "Defines the type of folding.
+set foldmethod=syntax "Defines the type of folding.
+let javaScript_fold=1 " JavaScript
+
 
 set encoding=utf8
 syntax enable
@@ -125,6 +127,7 @@ set title
 set mouse=a 
 set background=dark
 set number
+set relativenumber
 set cursorline
 set nowrap
 set linebreak
@@ -242,6 +245,9 @@ if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-" Pressing ,v opens the vimrc file in a new tab
+" Pressing space,v opens the vimrc file in a new tab
 let mapleader = ","
 nmap <leader>v :tabedit $MYVIMRC<CR>
+
+" clear the highlights
+nmap <silent> ,/ :nohlsearch<CR>
