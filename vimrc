@@ -3,15 +3,12 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
-Plug 'wfxr/minimap.vim'
+" Plug 'wfxr/minimap.vim'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 Plug 'leafgarland/typescript-vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'pangloss/vim-javascript'
-Plug 'marijnh/tern_for_vim', {'do' : 'npm install'}
-Plug 'slava/tern-meteor'
-Plug 'slava/vim-spacebars'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
@@ -110,6 +107,7 @@ vnoremap K :m '<-2<CR>gv=gv
 set encoding=utf8
 syntax enable
 set hlsearch
+set autowriteall
 set spell
 set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
             " background without writing to disk. When a background buffer becomes current again,
@@ -161,14 +159,15 @@ vmap <C-k> [egv
 vmap <C-j> ]egv
 
 " minimap config
-let g:minimap_width = 10
-let g:minimap_auto_start = 1
-let g:minimap_auto_start_win_enter = 1
+" let g:minimap_width = 10
+" let g:minimap_auto_start = 1
+" let g:minimap_auto_start_win_enter = 1
 
 " lightline config 
 set laststatus=2 
 set showtabline=2  " always show tabline
-autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+" autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+
 autocmd TextChanged,TextChangedI <buffer> silent write
 
 
@@ -252,3 +251,7 @@ nmap <leader>v :tabedit $MYVIMRC<CR>
 
 " clear the highlights
 nmap <silent> ,/ :nohlsearch<CR>
+
+" Nerd tree toggle shortcut
+nmap t :NERDTreeToggle<CR>
+
