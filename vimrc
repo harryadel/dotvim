@@ -117,6 +117,7 @@ set showmode
 set backspace=indent,eol,start
 set history=1000
 set autoread
+set completeopt=longest,menuone
 set noerrorbells 
 set visualbell
 set title
