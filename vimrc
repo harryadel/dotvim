@@ -1,5 +1,4 @@
 set nocompatible
-set encoding=UTF-8
 
 call plug#begin('~/.vim/plugged')
 Plug 'yegappan/mru'
@@ -135,7 +134,7 @@ set scrolloff=3
 set sidescrolloff=5
 set undodir=~/.vim/undodir
 " colorscheme solarized
-set directory=$HOME/.vim/swp//
+" set directory=$HOME/.vim/swp/
 if has('gui_running')
   set guifont=JetBrains\ Mono
 endif
