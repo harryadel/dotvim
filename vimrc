@@ -1,5 +1,3 @@
-set nocompatible
-
 call plug#begin('~/.vim/plugged')
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
@@ -29,18 +27,57 @@ Plug 'maximbaz/lightline-ale'
 Plug 'mengelbrecht/lightline-bufferline'
 call plug#end()
 
-" Shortcut to rapidly toggle `set list`
-nnoremap <leader>l :set list!<CR>
+
+set nocompatible
+
+set encoding=utf8
+syntax enable
+set hlsearch
+set autowriteall
+set spell
+set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
+            " background without writing to disk. When a background buffer becomes current again,
+            " marks and undo-history are remembered
+set showcmd
+set showmode
+set backspace=indent,eol,start
+set history=1000
+set autoread
+set completeopt=longest,menuone
+set noerrorbells 
+set visualbell
+set title
+set mouse=a 
+set background=dark
+set t_Co=16
+set number
+" set relativenumber
+" set cursorline
+set nowrap
+set linebreak
+set scrolloff=3
+set sidescrolloff=5
+set undodir=~/.vim/undodir
+" colorscheme solarized
+" set directory=$HOME/.vim/swp/
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
-" Invisible character colors 
-highlight NonText guifg=#4a4a59
-highlight SpecialKey guifg=#4a4a59
-
 " Allow normal copy-pasting
 " https://stackoverflow.com/a/44944386/6688795
 set clipboard=unnamedplus
 set paste
+" lightline config 
+set laststatus=2 
+set showtabline=2  " always show tabline
+
+
+let mapleader = ","
+" Shortcut to rapidly toggle `set list`
+nnoremap <leader>l :set list!<CR>
+" Invisible character colors 
+highlight NonText guifg=#4a4a59
+highlight SpecialKey guifg=#4a4a59
+
 
 " Set tabstop, softtabstop and shiftwidth to the same value
 command! -nargs=* Stab call Stab()
@@ -104,37 +141,6 @@ vnoremap . :normal.<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-
-set encoding=utf8
-syntax enable
-set hlsearch
-set autowriteall
-set spell
-set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
-            " background without writing to disk. When a background buffer becomes current again,
-            " marks and undo-history are remembered
-set showcmd
-set showmode
-set backspace=indent,eol,start
-set history=1000
-set autoread
-set completeopt=longest,menuone
-set noerrorbells 
-set visualbell
-set title
-set mouse=a 
-set background=dark
-set t_Co=16
-set number
-" set relativenumber
-" set cursorline
-set nowrap
-set linebreak
-set scrolloff=3
-set sidescrolloff=5
-set undodir=~/.vim/undodir
-" colorscheme solarized
-" set directory=$HOME/.vim/swp/
 if has('gui_running')
   set guifont=JetBrains\ Mono
 endif
@@ -165,9 +171,6 @@ vnoremap <C-j> ]egv
 " let g:minimap_auto_start = 1
 " let g:minimap_auto_start_win_enter = 1
 
-" lightline config 
-set laststatus=2 
-set showtabline=2  " always show tabline
 " autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 autocmd TextChanged,TextChangedI <buffer> silent write
@@ -247,8 +250,7 @@ if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-" Pressing v opens the vimrc file in a new tab
-let mapleader = ","
+" Pressing ,v opens the vimrc file in a new tab
 nmap <leader>v :tabedit $MYVIMRC<CR>
 
 " clear the highlights
@@ -256,4 +258,3 @@ nmap <silent> ,/ :nohlsearch<CR>
 
 " Nerd tree toggle shortcut
 nmap t :NERDTreeToggle<CR>
-
