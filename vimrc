@@ -72,6 +72,7 @@ set showtabline=2  " always show tabline
 
 
 let mapleader = ","
+let maplocalleader = "\\"
 " Shortcut to rapidly toggle `set list`
 nnoremap <leader>l :set list!<CR>
 " Invisible character colors 
