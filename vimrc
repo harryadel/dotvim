@@ -247,7 +247,7 @@ if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-" Pressing space,v opens the vimrc file in a new tab
+" Pressing v opens the vimrc file in a new tab
 let mapleader = ","
 nmap <leader>v :tabedit $MYVIMRC<CR>
 
