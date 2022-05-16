@@ -89,10 +89,10 @@ if has("autocmd")
 endif
 
 " Move between windows
-" map <C-h> <C-w>h
-" map <C-j> <C-w>j
-" map <C-k> <C-w>k
-" map <C-l> <C-w>l
+" vmap <C-h> <C-w>h
+" vmap <C-j> <C-w>j
+" vmap <C-k> <C-w>k
+" vmap <C-l> <C-w>l
 
 vnoremap > >gv
 vnoremap < <gv
