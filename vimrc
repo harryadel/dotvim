@@ -30,7 +30,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 call plug#end()
 
 " Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
+nnoremap <leader>l :set list!<CR>
 " Use the same symbols as TextMate for tabstops and EOLs
 set listchars=tab:▸\ ,eol:¬
 " Invisible character colors 
@@ -89,10 +89,10 @@ if has("autocmd")
 endif
 
 " Move between windows
-" vmap <C-h> <C-w>h
-" vmap <C-j> <C-w>j
-" vmap <C-k> <C-w>k
-" vmap <C-l> <C-w>l
+" vnoremap <C-h> <C-w>h
+" vnoremap <C-j> <C-w>j
+" vnoremap <C-k> <C-w>k
+" vnoremap <C-l> <C-w>l
 
 vnoremap > >gv
 vnoremap < <gv
@@ -154,11 +154,11 @@ nnoremap <C-h> :tabprevious<CR>
 nnoremap <C-l> :tabnext<CR>
 
 " Bubble single lines
-nmap <C-k> [e
-nmap <C-j> ]e
+nnoremap <C-k> [e
+nnoremap <C-j> ]e
 " Bubble multiple lines
-vmap <C-k> [egv
-vmap <C-j> ]egv
+vnoremap <C-k> [egv
+vnoremap <C-j> ]egv
 
 " minimap config
 " let g:minimap_width = 10
