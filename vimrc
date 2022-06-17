@@ -25,11 +25,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'mengelbrecht/lightline-bufferline'
+Plug 'nlknguyen/copy-cut-paste.vim'
 call plug#end()
 
-
 set nocompatible
-
 set encoding=utf8
 syntax enable
 set hlsearch
@@ -64,11 +63,13 @@ set undodir=~/.vim/undodir
 set listchars=tab:▸\ ,eol:¬
 " Allow normal copy-pasting
 " https://stackoverflow.com/a/44944386/6688795
-set clipboard=unnamedplus
-set paste
+" set clipboard=unnamedplus
 " lightline config 
 set laststatus=2 
 set showtabline=2  " always show tabline
+
+iabbrev waht what
+iabbrev tehn then
 
 
 let mapleader = ","
@@ -125,6 +126,10 @@ if has("autocmd")
   " Treat .rss files as XML
   autocmd BufNewFile,BufRead *.rss setfiletype xml
 endif
+
+autocmd BufNewFile * :write
+autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
+autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
 
 " Move between windows
 " vnoremap <C-h> <C-w>h
@@ -246,6 +251,9 @@ let g:ctrlp_prompt_mappings = {
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
 
+" Edit my vim file
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+
 " Source the vimrc file after saving it
 if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
@@ -259,3 +267,13 @@ nmap <silent> ,/ :nohlsearch<CR>
 
 " Nerd tree toggle shortcut
 nmap t :NERDTreeToggle<CR>
+
+" Exist insert mode using jk instead of <esc>
+inoremap jk <esc>
+" Disable old escape
+inoremap <esc> <nop>
+
+nnoremap <C-c> "+y
+vnoremap <C-c> "+y
+nnoremap <C-v> "+p
+vnoremap <C-v> "+p
