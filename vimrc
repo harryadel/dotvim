@@ -1,7 +1,10 @@
 call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-abolish'
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
 " Plug 'wfxr/minimap.vim'
+Plug 'mattn/emmet-vim'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 Plug 'leafgarland/typescript-vim'
 Plug 'leshill/vim-json'
@@ -26,19 +29,26 @@ Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'nlknguyen/copy-cut-paste.vim'
+Plug 'ledesmablt/vim-run'
 call plug#end()
 
+" make vim behave in more useful way (the default) than vi-compatible manner
 set nocompatible
 set encoding=utf8
 syntax enable
+" Highlight search findings
 set hlsearch
+" Automatically save the changes without asking
 set autowriteall
 set spell
 set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
             " background without writing to disk. When a background buffer becomes current again,
             " marks and undo-history are remembered
+" Shows history of commands
 set showcmd
 set showmode
+" To allow backspacing over everything in insert mode 
+" (including automatically inserted indentation, line breaks and start of insert)
 set backspace=indent,eol,start
 set history=1000
 set autoread
@@ -113,7 +123,8 @@ endfunction
 if has("autocmd")
   " Enable file type detection
   filetype on
-
+  augroup filetype_html
+  autocmd!
   " Syntax of these languages is fussy over tabs Vs spaces
   autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
@@ -125,6 +136,7 @@ if has("autocmd")
 
   " Treat .rss files as XML
   autocmd BufNewFile,BufRead *.rss setfiletype xml
+  augroup EBD
 endif
 
 autocmd BufNewFile * :write
@@ -177,10 +189,11 @@ vnoremap <C-j> ]egv
 " let g:minimap_auto_start = 1
 " let g:minimap_auto_start_win_enter = 1
 
+augroup buffer_write
 " autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 autocmd TextChanged,TextChangedI <buffer> silent write
-
+augroup END
 
 let g:lightline = {
       \ 'colorscheme': 'solarized',
