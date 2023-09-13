@@ -3,6 +3,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-abolish'
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
+Plug 'tpope/vim-speeddating'
 " Plug 'wfxr/minimap.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
