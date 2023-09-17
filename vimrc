@@ -1,10 +1,13 @@
 call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-abolish'
+Plug 'Yggdroot/indentLine'
+Plug 'justinmk/vim-sneak'
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
 Plug 'tpope/vim-speeddating'
 " Plug 'wfxr/minimap.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 Plug 'leafgarland/typescript-vim'
@@ -12,9 +15,11 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'pangloss/vim-javascript'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 Plug 'jiangmiao/auto-pairs'
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'ayu-theme/ayu-vim'
 Plug 'hashivim/vim-terraform'
 Plug 'preservim/nerdtree' |
             \ Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -26,6 +31,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'mengelbrecht/lightline-bufferline'
@@ -36,12 +42,32 @@ call plug#end()
 " make vim behave in more useful way (the default) than vi-compatible manner
 set nocompatible
 set encoding=utf8
-syntax enable
+" enables syntax highlighting
+" syntax off
+
+" Disables annoying higlighing 
+set nospell
+
+" ayu mirage Theme config
+set termguicolors     " enable true colors support
+" let ayucolor="light"  " for light version of theme
+" let ayucolor="mirage" " for mirage version of theme
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
+
+" Ignore uppercase test === Test
+set ignorecase
+" Take note of camelCases fooBar !== foobar 
+set smartcase
+" Highlight search as you type
+set incsearch
+" Clear highlight when done
+nnoremap <CR> :noh<CR><CR>:<backspace>
 " Highlight search findings
 set hlsearch
 " Automatically save the changes without asking
 set autowriteall
-set spell
+
 set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
             " background without writing to disk. When a background buffer becomes current again,
             " marks and undo-history are remembered
@@ -54,30 +80,39 @@ set backspace=indent,eol,start
 set history=1000
 set autoread
 set completeopt=longest,menuone
-set noerrorbells 
-set visualbell
+" disables sounds, bells, beeps and screen flashing
+set noerrorbells visualbell t_vb= 
 set title
+" Allow mouse
 set mouse=a 
 set background=dark
 set t_Co=16
 set number
 " set relativenumber
 " set cursorline
+" Dont cut lines at the end of the screen
 set nowrap
 set linebreak
-set scrolloff=3
+set scrolloff=8
+set signcolumn=yes
 set sidescrolloff=5
-set undodir=~/.vim/undodir
-" colorscheme solarized
+"set undodir=~/.vim/undodir
 " set directory=$HOME/.vim/swp/
-" Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬
+" See invisible characters
+set list
+" Show hidden characters like end of line, trails and tabs
+" set listchars=eol:.,tab:>-,trail:~,extends:>,precedes:<
+" set listchars=tab:▸\ ,eol:¬
 " Allow normal copy-pasting
 " https://stackoverflow.com/a/44944386/6688795
 " set clipboard=unnamedplus
 " lightline config 
 set laststatus=2 
 set showtabline=2  " always show tabline
+if !has('gui_running')
+  set t_Co=256
+endif
+set noshowmode
 
 iabbrev waht what
 iabbrev tehn then
@@ -144,6 +179,9 @@ autocmd BufNewFile * :write
 autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
 autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
 
+" label-mode for a minimalist alternative to EasyMotion
+let g:sneak#label = 1
+
 " Move between windows
 " vnoremap <C-h> <C-w>h
 " vnoremap <C-j> <C-w>j
@@ -156,10 +194,6 @@ vnoremap < <gv
 " make . to work with visually selected lines
 vnoremap . :normal.<CR>
 
-" Move visual selection
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
 if has('gui_running')
   set guifont=JetBrains\ Mono
 endif
@@ -169,21 +203,27 @@ endif
 " pressing "T" (same for not silently with Tab instead of t) 
 let NERDTreeMapOpenInTab='<TAB>'
 let NERDTreeMapOpenInTabSilent='<ENTER>'
+" Show hidden files
+let NERDTreeShowHidden=1
+" Toggle NerdTree using Ctrl + B just like vscode 
+nnoremap <C-b> :NERDTreeToggle<CR>
 " tab movement
 " nnoremap <C-b> :NERDTreeToggle<CR>
 
 nnoremap <C-t> :tabnew<CR>
 " Ctrl + w interfers with window movement
 " nnoremap <C-w>     :tabclose<CR>
+
+" Move between tabs using Ctrl + h or Ctrl + l
 nnoremap <C-h> :tabprevious<CR>
 nnoremap <C-l> :tabnext<CR>
 
 " Bubble single lines
-nnoremap <C-k> [e
-nnoremap <C-j> ]e
+nmap <C-k> [e
+nmap <C-j> ]e
 " Bubble multiple lines
-vnoremap <C-k> [egv
-vnoremap <C-j> ]egv
+vmap <C-k> [egv
+vmap <C-j> ]egv
 
 " minimap config
 " let g:minimap_width = 10
@@ -191,16 +231,15 @@ vnoremap <C-j> ]egv
 " let g:minimap_auto_start_win_enter = 1
 
 augroup buffer_write
-" autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 autocmd TextChanged,TextChangedI <buffer> silent write
 augroup END
 
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'ayu_dark',
       \ }
 
-let g:lightline.tabline = {
+ let g:lightline.tabline = {
       \   'left': [ ['buffers'] ],
       \   'right': [ ['close'] ],
       \ }
@@ -229,6 +268,14 @@ let g:lightline.active = {
 \ }
 
 
+"coc config
+" I work with Meteor 2.x which forces me to use Node 14 so I've to set custom
+" path explicity
+let g:coc_node_path = '/home/harry/n/n/versions/node/18.17.1/bin/node'
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 " pangloss/vim-javascript config
 let g:javascript_plugin_jsdoc = 1
 
@@ -240,6 +287,8 @@ let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_lint_on_enter = 0
 let g:ale_fix_on_save = 1
+" Leave the language server protocol to CoC
+let g:ale_disable_lsp = 1
 " let g:airline#extensions#ale#enabled = 1
 " let g:airline#extensions#bufferline#enabled = 1
 " let g:ale_completion_enabled = 1
