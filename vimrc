@@ -2,9 +2,11 @@ call plug#begin('~/.vim/plugged')
 " Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-abolish'
 Plug 'Yggdroot/indentLine'
+Plug '907th/vim-auto-save'
 Plug 'justinmk/vim-sneak'
 Plug 'yegappan/mru'
 Plug 'dyng/ctrlsf.vim'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-speeddating'
 " Plug 'wfxr/minimap.vim'
 Plug 'sheerun/vim-polyglot'
@@ -12,7 +14,6 @@ Plug 'mattn/emmet-vim'
 Plug 'neoclide/npm.nvim', {'do' : 'npm install'}
 Plug 'leafgarland/typescript-vim'
 Plug 'leshill/vim-json'
-Plug 'tpope/vim-markdown'
 Plug 'pangloss/vim-javascript'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -66,7 +67,7 @@ nnoremap <CR> :noh<CR><CR>:<backspace>
 " Highlight search findings
 set hlsearch
 " Automatically save the changes without asking
-set autowriteall
+" set autowriteall
 
 set hidden  " Manage multiple buffers effectively: the current buffer can be “sent” to the
             " background without writing to disk. When a background buffer becomes current again,
@@ -156,31 +157,42 @@ function! SummarizeTabs()
 endfunction
 
 " Only do this part when compiled with support for autocommands
-if has("autocmd")
+" if has("autocmd")
   " Enable file type detection
-  filetype on
-  augroup filetype_html
-  autocmd!
-  " Syntax of these languages is fussy over tabs Vs spaces
-  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  " filetype on
+  " augroup filetype_html
+  "autocmd!
+  "" Syntax of these languages is fussy over tabs Vs spaces
+  "autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+  "autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-  " Customisations based on house-style (arbitrary)
-  autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType javascript setlocal ts=4 sts=4 sw=4 noexpandtab
+  "" Customisations based on house-style (arbitrary)
+  "autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
+  "autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+  "autocmd FileType javascript setlocal ts=4 sts=4 sw=4 noexpandtab
 
-  " Treat .rss files as XML
-  autocmd BufNewFile,BufRead *.rss setfiletype xml
-  augroup EBD
-endif
+  "" Treat .rss files as XML
+  "autocmd BufNewFile,BufRead *.rss setfiletype xml
+  " augroup EBD
+" endif
 
-autocmd BufNewFile * :write
+" Disable syntax higlighing for markdown files as it disallows me to edit
+" hyperlinks
+autocmd! FileType markdown setlocal syntax=off
+
+" This line was leading NERDTree and CtrlSF to save empty files in project
+" directory
+" autocmd BufNewFile * :write
 autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
 autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
 
 " label-mode for a minimalist alternative to EasyMotion
 let g:sneak#label = 1
+
+" Set the default mode for ctrlsf 
+let g:ctrlsf_default_view_mode= 'compact'
+" Async search mode so as not to block 
+let g:ctrlsf_search_mode= 'async'
 
 " Move between windows
 " vnoremap <C-h> <C-w>h
@@ -198,6 +210,8 @@ if has('gui_running')
   set guifont=JetBrains\ Mono
 endif
 
+let g:auto_save = 1  " enable AutoSave on Vim startup
+
 " Nerdtree config
 " in NERDTree, to open-silently file in newtab with Enter, instead of default
 " pressing "T" (same for not silently with Tab instead of t) 
@@ -210,6 +224,12 @@ nnoremap <C-b> :NERDTreeToggle<CR>
 " tab movement
 " nnoremap <C-b> :NERDTreeToggle<CR>
 
+" How NERDTree would know in which window to to open up? 
+" http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/
+let NERDTreeHijackNetrw=1
+
+
+" open up tab with Ctrl + T 
 nnoremap <C-t> :tabnew<CR>
 " Ctrl + w interfers with window movement
 " nnoremap <C-w>     :tabclose<CR>
@@ -230,10 +250,14 @@ vmap <C-j> ]egv
 " let g:minimap_auto_start = 1
 " let g:minimap_auto_start_win_enter = 1
 
-augroup buffer_write
+" Switching between Vim and a terminal 
+" Type fg in terminal to get back to vim
+" nnoremap <leader>t :stop<CR>
+" Just found out this can be achieved with Ctrl+z without a need for remap
 
-autocmd TextChanged,TextChangedI <buffer> silent write
-augroup END
+"augroup buffer_write
+"autocmd TextChanged,TextChangedI <buffer> silent write
+"augroup END
 
 let g:lightline = {
       \ 'colorscheme': 'ayu_dark',
@@ -305,6 +329,9 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>'],
     \ }
+" Turns off caching so it can automatically detect new files 
+let g:ctrlp_use_caching = 0
+
 
 " vim airline config
 " let g:airline_theme='solarized'
