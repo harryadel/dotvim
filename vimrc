@@ -38,6 +38,9 @@ Plug 'maximbaz/lightline-ale'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'nlknguyen/copy-cut-paste.vim'
 Plug 'ledesmablt/vim-run'
+Plug 'andymass/vim-matchup'
+Plug 'tyru/open-browser.vim'
+Plug 'kannokanno/previm'
 call plug#end()
 
 " make vim behave in more useful way (the default) than vi-compatible manner
@@ -114,6 +117,9 @@ if !has('gui_running')
   set t_Co=256
 endif
 set noshowmode
+
+" Allows us to edit CtrlSF results i.e making buffer modifiable
+set modifiable
 
 iabbrev waht what
 iabbrev tehn then
@@ -193,6 +199,15 @@ let g:sneak#label = 1
 let g:ctrlsf_default_view_mode= 'compact'
 " Async search mode so as not to block 
 let g:ctrlsf_search_mode= 'async'
+" Toggle search window
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 
 " Move between windows
 " vnoremap <C-h> <C-w>h
@@ -227,7 +242,6 @@ nnoremap <C-b> :NERDTreeToggle<CR>
 " How NERDTree would know in which window to to open up? 
 " http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/
 let NERDTreeHijackNetrw=1
-
 
 " open up tab with Ctrl + T 
 nnoremap <C-t> :tabnew<CR>
@@ -332,7 +346,6 @@ let g:ctrlp_prompt_mappings = {
 " Turns off caching so it can automatically detect new files 
 let g:ctrlp_use_caching = 0
 
-
 " vim airline config
 " let g:airline_theme='solarized'
 " let g:airline_solarized_bg='dark'
@@ -340,6 +353,9 @@ let g:ctrlp_use_caching = 0
 " Terraform config
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
+
+" Previm config
+" 
 
 " Edit my vim file
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
